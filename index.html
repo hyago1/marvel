@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
+    <title>Marvel</title>
+</head>
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 0;
+        background-color: rgb(237, 237, 237);
+    }
+
+    span {
+        color: white;
+    }
+
+    p {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    header {
+        margin-bottom: 2%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 80px;
+        background-color: black;
+    }
+
+    #imghero , .img-modal{
+        width: 200px;
+        height: 200px;
+        margin: 5px;
+
+
+    }
+
+    #imghero:hover {
+        cursor: pointer;
+        transition-duration: 400ms;
+        transform: scale(1.1);
+    }
+
+    li {
+        display: flex;
+        justify-content: center;
+    }
+
+    .heros {
+        width: 90%;
+        height: max-content;
+    }
+
+    #lista {
+        margin: 0px;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: auto;
+        grid-row-gap: auto;
+
+    }
+
+    .herosInfo {
+        cursor: pointer;
+        border: 1px solid rgb(197, 197, 197);
+        margin: 3px;
+        padding-top: 8px;
+        padding: 4px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+
+    }
+    #modal{
+        padding: 8px;
+        width: 35rem;
+        height: auto;
+        background-color: rgb(23, 23, 23);
+        color: white;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: small;
+        border-radius: 4px;
+    }
+    #div-modal{    
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;  
+    background-color: rgba(0, 0, 0, 0.688);
+    visibility: hidden;
+
+}
+.img-desc-modal{
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    width: 95%;
+    background-color: rgba(255, 0, 0, 0.663);
+}
+.desc-modal{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    display: flex;
+    height: 90%;
+}
+#desc{
+    margin-left: 10px;
+    font-size: 16px;
+    text-align: justify;
+}
+.modal-font-titles{
+    font-family:  'Tilt Neon', cursive ;
+    font-size: medium;
+}
+.font-body-modal{
+    font-family: 'Montserrat', sans-serif;
+
+}
+.btn-modal{
+    padding: 15px;
+    cursor: pointer;
+    background-color: rgb(37, 52, 184);
+    border-radius: 4px;
+    border: none;
+    
+}
+.btn-modal:hover{
+    border-bottom: 1px solid red;
+       transition-duration: 400ms;
+        transform: scale(1.05);
+
+}
+</style>
+
+<body>
+    <header>
+        <span>Marvel Comics</span>
+    </header>
+        <div onclick="abrirModal()" id="div-modal">
+
+        </div>
+    <div class="heros">
+
+        <ul id="lista"></ul>
+    </div>
+
+
+
+</body>
+
+<script>
+
+
+    const ts = '1677260751442';
+    const kPublic = "d71fe148f9a3dfeab089c453fcb238be";
+    const md5 = "2f0c97e8eb18684dfcd024f8b343e8e5";
+    const url =`https://gateway.marvel.com/v1/public/comics?ts=${ts}&apikey=${kPublic}&hash=${md5}`;
+
+  
+fetch(url)
+        .then((response) => {
+            return response.json()
+        }).then((json) => {
+
+            json.data.results.forEach((element , index) => {
+
+                const image = element.thumbnail.path + '.' + element.thumbnail.extension;
+
+                const hero =
+                    `<div class="herosInfo" onClick="abrirModal(${index})"id="btn-mensagem">
+                    <a href="#div-modal"><li>  <img id="imghero"  src="${image}"alt="" srcset=""></li></a>
+                    <p>${element.title}</p>
+                    </div>`;
+ 
+                let lista = document.getElementById('lista').innerHTML += hero;
+
+            });
+            
+            
+        })
+
+      
+       function abrirModal(d) {
+        var modalAbrir = document.getElementById('div-modal');  
+        if (modalAbrir.style.visibility == 'visible') {
+            modalAbrir.innerHTML=''
+           modalAbrir.style.visibility = 'hidden'
+        }
+        else{
+                fetch(url)
+        .then((response) => {
+            return response.json()
+        }).then((json) => {   
+            console.log(json);
+            const image = json.data.results[d].thumbnail.path + '.' +json.data.results[d].thumbnail.extension;
+          
+            var  modal = `<div  id="modal">
+            <div class="img-desc-modal"> 
+            <img src="${image}" class="img-modal" alt="" srcset="">   
+            <div class="desc-modal"> 
+            <span class="modal-font-titles" >Descrição</span>
+            <p class="modal-font-titles" id="desc" >${json.data.results[d].description}</p>
+            </div>
+            </div>
+           
+             <span class="modal-font-titles">Titulo</span>
+             <p class="modal-font-titles">${json.data.results[d].title}</p>
+                <a href="${json.data.results[d].urls[0].url}"> <input class="btn-modal" type="button" value="Lets"></a>
+            </div>`;
+
+
+      
+             
+        modalAbrir.innerHTML  += modal;
+        modalAbrir.style.visibility ='visible'
+        console.log(modal);
+  })
+        }
+     
+
+      
+         
+
+      
+
+        
+
+
+}
+
+</script>
+
+</html>
