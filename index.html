@@ -74,6 +74,8 @@
     }
 
     #lista {
+
+        justify-content: center;
         margin: 0px;
         list-style: none;
         display: grid;
@@ -81,7 +83,28 @@
         grid-column-gap: auto;
         grid-row-gap: auto;
 
+    }  @media only screen and (max-width: 800px) {
+        #lista {
+
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: auto;
+        grid-row-gap: auto;
+
     }
+}
+    @media only screen and (max-width: 600px) {
+  
+        #lista {
+        margin: 0px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+       
+
+    }
+}
+  
 
     .herosInfo {
         cursor: pointer;
